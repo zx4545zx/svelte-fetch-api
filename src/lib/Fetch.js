@@ -1,30 +1,12 @@
 import { writable } from 'svelte/store';
 import axios from 'axios';
 
-export const Form = writable({
-  name: "alf",
-  username: "test",
-  email: "test@test.com",
-  address: {
-    street: "test",
-    suite: "test",
-    city: "test",
-    zipcode: "92998-3874",
-    geo: {
-      lat: "-37.3159",
-      lng: "81.1496",
-    },
-  },
-});
-
-export const Users = () => {
+export default function Fetch(url = null) {
   const loading = writable(undefined)
 	const error = writable(undefined)
 	const data = writable([]);
-
-  const url = "https://jsonplaceholder.typicode.com/users"
 	
-	async function get() {
+	async function getAll() {
     loading.set(true)
 		error.set(false)
 
@@ -41,15 +23,15 @@ export const Users = () => {
     loading.set(false)
 	}
 
-  async function post(user) {
+  async function post(value) {
     loading.set('Saving...')
 		error.set(false)
 
     try {
-      const res = await axios.post(url, user)
+      const res = await axios.post(url, value)
       console.log('save: ', res.data)
 
-      if (res.data) await get()
+      if (res.data) await getAll()
     } catch (e) {
       console.log(e);
       error.set(e.message);
@@ -58,5 +40,5 @@ export const Users = () => {
     loading.set(false)
   }
 	
-	return [ data, loading, error, get, post]
+	return [ data, loading, error, getAll, post]
 }

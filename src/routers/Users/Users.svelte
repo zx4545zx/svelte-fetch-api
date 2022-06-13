@@ -1,10 +1,13 @@
 <script>
-  import { Form, Users } from "./users.js";
+  import Fetch from "../../lib/Fetch.js";
+  import { user } from "../../lib/store.js";
   import { onMount } from "svelte";
 
-  const [data, loading, error, get, post] = Users();
+  const [data, loading, error, getAll, post] = Fetch(
+    "https://jsonplaceholder.typicode.com/users"
+  );
 
-  onMount(() => get());
+  onMount(async () => await getAll());
 </script>
 
 <div class="container">
@@ -12,8 +15,14 @@
   {#if $loading === "Saving..."}
     <div class="message">{$loading}</div>
   {:else}
-    <input type="text" name="name" id="name" bind:value={$Form.name} placeholder="name" />
-    <button class="buttonClass" on:click={() => post($Form)}>
+    <input
+      type="text"
+      name="name"
+      id="name"
+      bind:value={$user.name}
+      placeholder="name"
+    />
+    <button class="buttonClass" on:click={() => post($user)}>
       Add New User
     </button>
   {/if}
