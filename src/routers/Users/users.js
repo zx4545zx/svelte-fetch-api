@@ -1,7 +1,23 @@
 import { writable } from 'svelte/store';
 import axios from 'axios';
 
-export default function () {
+export const Form = writable({
+  name: "alf",
+  username: "test",
+  email: "test@test.com",
+  address: {
+    street: "test",
+    suite: "test",
+    city: "test",
+    zipcode: "92998-3874",
+    geo: {
+      lat: "-37.3159",
+      lng: "81.1496",
+    },
+  },
+});
+
+export const Users = () => {
   const loading = writable(undefined)
 	const error = writable(undefined)
 	const data = writable([]);
@@ -25,7 +41,7 @@ export default function () {
     loading.set(false)
 	}
 
-  async function post(user = {}) {
+  async function post(user) {
     loading.set('Saving...')
 		error.set(false)
 

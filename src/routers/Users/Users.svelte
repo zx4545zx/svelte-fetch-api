@@ -1,26 +1,10 @@
 <script>
-  import Users from "./users.js";
+  import { Form, Users } from "./users.js";
   import { onMount } from "svelte";
 
   const [data, loading, error, get, post] = Users();
-  const mock_data = {
-    name: "alf",
-    username: "test",
-    email: "test@test.com",
-    address: {
-      street: "test",
-      suite: "test",
-      city: "test",
-      zipcode: "92998-3874",
-      geo: {
-        lat: "-37.3159",
-        lng: "81.1496",
-      },
-    },
-  };
 
   onMount(() => get());
-  const Save = async () => await post(mock_data);
 </script>
 
 <div class="container">
@@ -28,7 +12,10 @@
   {#if $loading === "Saving..."}
     <div class="message">{$loading}</div>
   {:else}
-    <button class="buttonClass" on:click={() => Save()}>Add New User</button>
+    <input type="text" name="name" id="name" bind:value={$Form.name} placeholder="name" />
+    <button class="buttonClass" on:click={() => post($Form)}>
+      Add New User
+    </button>
   {/if}
 
   {#if $loading && typeof $loading !== "string"}
@@ -45,6 +32,12 @@
 </div>
 
 <style>
+  input {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 50px;
+  }
+
   .buttonClass {
     margin: 20px 0;
     padding: 10px;
