@@ -1,5 +1,5 @@
 <script>
-  import Fetch from "../../lib/Fetch.js";
+  import Fetch from "../../lib/fetch.js";
   import { user } from "../../lib/store.js";
   import { onMount } from "svelte";
 

@@ -1,9 +1,9 @@
 import { writable } from 'svelte/store';
 import axios from 'axios';
 
-export default function Fetch(url = null) {
-  const loading = writable(undefined)
-	const error = writable(undefined)
+export default function (url = null) {
+  const loading = writable()
+	const error = writable()
 	const data = writable([]);
 	
 	async function getAll() {
@@ -23,7 +23,7 @@ export default function Fetch(url = null) {
     loading.set(false)
 	}
 
-  async function post(value) {
+  async function post(value = {}) {
     loading.set('Saving...')
 		error.set(false)
 
