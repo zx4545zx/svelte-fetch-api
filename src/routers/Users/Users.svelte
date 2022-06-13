@@ -7,7 +7,7 @@
     "https://jsonplaceholder.typicode.com/users"
   );
 
-  onMount(async () => await getAll());
+  onMount(() => getAll());
 </script>
 
 <div class="container">
