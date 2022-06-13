@@ -1,10 +1,8 @@
 <script>
-  // @ts-nocheck
   import Users from "./users.js";
   import { onMount } from "svelte";
-  import users from "./users.js";
 
-  const [data, get, post] = Users();
+  const [data, loading, error, get, post] = Users();
   const mock_data = {
     name: "alf",
     username: "test",
@@ -22,41 +20,57 @@
   };
 
   onMount(() => get());
-  const save = async () => await post(mock_data);
+  const Save = async () => await post(mock_data);
 </script>
 
 <div class="container">
   <h1>Users</h1>
-  <button class="buttonClass" on:click={() => save()}>Add User</button>
-  <ul>
-    {#each $data as u, i}
-      <li>{i + 1}. {u.name}</li>
-    {/each}
-  </ul>
+  {#if $loading === "Saving..."}
+    <div class="message">{$loading}</div>
+  {:else}
+    <button class="buttonClass" on:click={() => Save()}>Add New User</button>
+  {/if}
+
+  {#if $loading && typeof $loading !== "string"}
+    <div class="message">Loading...</div>
+  {:else if $error}
+    <div class="error">{$error}</div>
+  {:else}
+    <ul>
+      {#each $data as u, i}
+        <li>{i + 1}. {u.name}</li>
+      {/each}
+    </ul>
+  {/if}
 </div>
 
 <style>
   .buttonClass {
     margin: 20px 0;
-    width: 140px;
-    height: 50px;
+    padding: 10px;
     border: none;
-    color: #fff;
-    border-radius: 3px;
-    box-shadow: inset 0px -3px 7px 0px #29bbff;
-    text-shadow: inset 0px 1px 0px #263666;
-    background: linear-gradient(#2dabf9, #0688fa);
+    border-radius: 50px;
+    background-color: aquamarine;
+    color: gray;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .buttonClass:hover {
+    background-color: cadetblue;
+    color: lavender;
   }
 
-  .buttonClass:hover {
-    background: linear-gradient(#0688fa, #2dabf9);
+  .message {
+    margin: 20px 0;
+    color: gray;
+  }
+  .error {
+    color: orangered;
   }
 
   ul {
+    padding: 10px;
+    border-radius: 10px;
     background-color: aquamarine;
-  }
-
-  li {
-    list-style: none;
   }
 </style>
